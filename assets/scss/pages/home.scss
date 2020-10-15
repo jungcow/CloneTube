@@ -1,0 +1,43 @@
+.video-container{
+  padding-top: 1.6rem;
+  margin: 0 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  grid-gap: 0.8rem;
+  .videoBlock{
+    width: 100%;
+  }
+  .videoBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: black;
+    video{
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: 510px){
+    margin: 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    .videoBlock{
+      width: 100%;
+    }
+  }
+  @media screen and (min-width: 500px) and (max-width: 800px){
+    grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (min-width: 800px) and (max-width: 1100px){
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media screen and (min-width: 1100px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+
+

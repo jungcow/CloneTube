@@ -1,0 +1,86 @@
+.profile__background{
+  width: 100%;
+  height: 8rem;
+  background-color: black;
+  z-index: 2;
+  box-shadow: 0 0.5rem 1rem #ffeaa7;
+  img{
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+    // overflow: hidden;
+    // -moz-box-shadow: inset 0 0 2rem rgba(0,0,0);
+    // -webkit-box-shadow: inset 0 0 2rem rgba(0,0,0);
+  }
+}
+.profile__container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+  width: 75%;
+  margin: 0 auto;
+  .profile__column{
+    &:first-child{
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      .profile__image{
+        width: 6rem;
+        height: 6rem;
+        border-radius: 50%;
+        background-color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        img{
+          width: 6rem;
+          height: 6rem;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+      }
+    }
+    a{
+      &:not(:last-child){
+        margin-right: 1rem;
+      }
+      button{
+        width: 8rem;
+      }
+    }
+  }
+}
+
+.profile__user{
+  background-color: #101010;
+  padding: 2rem 0;
+  min-height: 80vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2{
+    margin-bottom: 1rem;
+  }
+  .profile__user--videos{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;     
+    .videoBlock{
+      width: 13rem;
+      margin: 0 0.5rem;
+      h4{
+        margin: 0.5rem 0 0.3rem;
+        font-size: 0.8rem;
+      }
+      h6{
+        font-size: 0.7rem;
+        opacity: 0.7;
+        margin-bottom: 0.4rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+extends layout/main
+include mixins/videoBlock
+
+block content
+  .search-container
+    //- each creator in creators
+    //-   h4=creator.name
+    each video in videos
+      +videoBlock({
+        id: video.id,
+        fileUrl: video.fileUrl,
+        title: video.title,
+        uploadedAt: video.uploadedAt,
+        views: video.views,
+        description: video.description,
+        creator: video.creator.name,
+        avatarUrl: video.creator.avatarUrl,
+        creatorId: video.creator.id,
+      })
+      

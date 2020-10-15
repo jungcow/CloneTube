@@ -1,0 +1,83 @@
+extends layout/main
+
+block content
+  .videoBlock
+    .videoBox
+      video(src=`/${video.fileUrl}`)
+    .video__column
+      h1.video__title=video.title
+      .video__viewAndTime
+        h5.video__views 조회수 #{video.views}회 •
+        h5.video__uploadedAt &nbsp #{video.uploadedAt.toJSON().slice(0,10).replace(/-/gi, '. ')}
+    .video__column
+      .video__top-container
+        .video__creator-profile
+          a(href=`/user${routes.profile(video.creator.id)}`)
+            if video.creator.avatarUrl.startsWith('upload')
+              img(src=`/${video.creator.avatarUrl}`)
+            else
+              img(src=video.creator.avatarUrl)
+        .video__creatorAndDescription
+          span.video__creator=video.creator.name
+          span.video__subscriber 구독자:
+          h4.video__description=video.description
+      if user
+        if user.id === video.creator.id
+          a(href=`/video${routes.editVideo(video.id)}`)
+            .video__bottom-container
+              button 영상 편집
+        else              
+          .video__bottom-container
+            button.subscribing 구독
+      else
+        .video__bottom-container
+          button 구독
+        //- a(href=`/video/${routes.subscribe(video.id)}`)
+          .video__bottom-container
+            button 구독
+    .video__column
+      .video__comment-container
+        .video__comment--column
+          .comment__number
+            span 댓글&nbsp
+            span#jsCommentNumber=video.comments.length
+            span 개
+        .video__comment--column
+          .comment__add
+            if video.creator.avatarUrl.startsWith('upload')
+              img.comment__avatar(src=`/${video.creator.avatarUrl}`)
+            else
+              img.comment__avatar(src=video.creator.avatarUrl)
+            form.comment__message#jsCommentForm
+              textarea(placeholder='공개 댓글 추가...', required)
+              input(type='submit', value='댓글')
+        .video__comment--column
+          .comment__all
+            ul.comment__comment-list#jsCommentList
+              each comment in video.comments.reverse()
+                li
+                  .comment__comment-container
+                    .comment__column
+                      if comment.creator.avatarUrl.startsWith('upload')
+                        img(src=`/${comment.creator.avatarUrl}` width=50)
+                      else
+                        img(src=comment.creator.avatarUrl width=50)
+                      .comment__content-container  
+                        span.comment__creator-name=comment.creator.name
+                        span.comment__comment=comment.message
+                        .comment__button-container
+                          button.btn-like
+                            i.fas.fa-thumbs-up
+                            span #{comment.like.length}
+                          button.btn-hate 
+                            i.fas.fa-thumbs-down
+                          button.btn-reply 답글
+                    .comment__column
+                      button.comment__menu-box
+                          i.fas.fa-ellipsis-v
+                      .comment__option-box
+                        if comment.creator = user.id
+                          span.comment__update 수정
+                          span.comment__delete 삭제
+                        else  
+                          span.comment__report 신고

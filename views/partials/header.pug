@@ -1,0 +1,28 @@
+header.header
+  .column
+    //- youtube icon
+    a(href=routes.home)
+      |Youtube
+  .column
+    .searchForm-container
+      form(action=routes.search, method='get')
+        input(type='text', name='term', placeholder='영상 검색')
+  .column
+    if !user
+      .column-child
+        a(href=routes.join)
+          span 가입하기
+      .column-child 
+        a(href=routes.login)
+          span 로그인
+    else
+      .column-child
+        a(href=routes.upload)
+            span 업로드
+      .column-child 
+        a(href=routes.me)
+          //-user icon
+          span 내 정보
+      .column-child 
+        a(href=routes.logout)
+          span 로그아웃

@@ -1,0 +1,36 @@
+extends layout/main
+include mixins/videoBlock
+
+block content
+  .video-container
+    each video in videos
+      +videoBlock({
+        id: video.id,
+        fileUrl: video.fileUrl,
+        title: video.title,
+        views: video.views,
+        uploadedAt: video.uploadedAt
+      })
+    each video in videos
+      +videoBlock({
+        id: video.id,
+        fileUrl: video.fileUrl,
+        title: video.title,
+        uploadedAt: video.uploadedAt
+      })
+    each video in videos
+      +videoBlock({
+        id: video.id,
+        fileUrl: video.fileUrl,
+        title: video.title,
+        uploadedAt: video.uploadedAt
+      })
+    each video in videos
+      +videoBlock({
+        id: video.id,
+        fileUrl: video.fileUrl,
+        title: video.title,
+        uploadedAt: video.uploadedAt
+      })  
+
+  

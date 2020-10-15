@@ -1,0 +1,114 @@
+.video__comment-container{
+  .video__comment--column{
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0;
+    &:nth-child(2){
+      .comment__add{
+        width: 100%;
+        display: flex;
+        // align-items: center;
+        img{
+          width: 3rem;
+          height: 3rem;
+          border-radius: 50%;
+          object-fit: cover;
+          overflow: hidden;
+          margin-right: 1rem;
+        }
+        .comment__message{
+          width: 100%;
+          textarea{
+            width: 100%;
+            height: 50%;
+            background-color: transparent;
+            color: white;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            resize: none;
+          }
+        }
+      }
+    }
+    &:last-child{
+      .comment__comment-container{
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        .comment__column{
+          &:first-child{
+            display: flex;
+            img{
+              width: 3rem;
+              height: 3rem;
+              border-radius: 50%;
+              object-fit: cover;
+              overflow: hidden;
+              margin-right: 1rem;
+            }
+            .comment__content-container{
+              margin-top: 0.4rem;
+              font-size: 0.8rem;
+              display: flex;
+              flex-direction: column;
+              span{
+                margin-bottom: 0.5rem;
+                &:nth-child(2){
+                  font-size: 1rem;
+                  margin-bottom: 0.5rem;
+                }
+              }
+              .comment__button-container{
+                .btn-like,
+                .btn-hate{
+                  opacity: 0.6;
+                }
+                .btn-reply{
+                  margin-left: 1.3rem;
+                }
+              }
+            }
+          }
+          &:last-child{
+            @keyframes fadeIn{
+              from{
+                color: transparent;
+                background-color: transparent;
+              }
+              to{
+                color: white;
+                background-color: black;
+              }
+            }
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            .comment__menu-box{
+              margin-top: 0.5rem;
+              padding: 0.5rem 1rem;
+              border-radius: 50%;
+              color: rgba(255, 255, 255, 0.4);
+              &:focus+.comment__option-box>span{
+                animation: fadeIn 0.1s linear forwards;
+              }
+            }
+            .comment__option-box{
+              height: auto;
+              color: transparent;
+              transition: transform 1s linear;
+              display: flex;
+              align-items: center;
+              span{
+                padding: 0.8rem;
+                background-color: transparent;
+                cursor: pointer;
+              }
+            }
+            
+          }
+        }
+      }
+    }
+  }
+}
+

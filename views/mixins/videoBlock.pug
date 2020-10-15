@@ -1,0 +1,23 @@
+mixin videoBlock(video={})
+  .videoBlock
+    a(href=`/video${routes.videoDetail(video.id)}`)
+      .videoBox
+        video(src=`/${video.fileUrl}`, width='100%')
+      .video-explanation
+        .video-explanation__column
+          h4.video-title=video.title
+        .video-explanation__column
+          if video.description
+            h5.video-description=video.description
+          .video-creator#jsVideoCreator
+            //- 후에 클릭 이벤트를 걸자
+            if video.creator
+                .video-creator__avatar
+                  if video.avatarUrl.startsWith('upload')
+                    img(src=`/${video.avatarUrl}`)
+                  else
+                    img(src=video.avatarUrl)
+                h5.video-creator__name=video.creator
+          .video-explanation__viewsAndTime
+            h6.video-views #{video.views} •
+            h6.video-uploadedAt &nbsp #{video.uploadedAt.toJSON()}

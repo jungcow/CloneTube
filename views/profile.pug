@@ -1,0 +1,36 @@
+extends layout/main
+include mixins/videoBlock
+
+block content
+  if user.avatarUrl
+    .profile__background
+      if user.avatarUrl.startsWith('upload')
+        img(src=`/${user.avatarUrl}`)
+      else
+        img(src=user.avatarUrl)
+  .profile__container
+    .profile__column
+      .profile__image
+        if user.avatarUrl
+          if user.avatarUrl.startsWith('upload')
+            img(src=`/${user.avatarUrl}`)
+          else
+            img(src=user.avatarUrl)
+        else
+          i.fas.fa-user.fa-lg
+      .profile__content
+        h4=user.name
+    .profile__column
+      //- a(href=`/user${routes.editProfile}`)
+      button.subscribing
+        |구독
+  .profile__user
+    h2 동영상
+    .profile__user--videos
+      each video in user.videos
+        +videoBlock({
+          id: video.id,
+          fileUrl: video.fileUrl,
+          title: video.title,
+          uploadedAt: video.uploadedAt
+        })
