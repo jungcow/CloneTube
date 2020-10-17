@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const CommentSchema = new mongoose.Schema({
+  uniqueId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

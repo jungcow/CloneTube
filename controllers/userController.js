@@ -58,7 +58,7 @@ export const githubCallback = async (accessToken, refreshToken, profile, done) =
       },
       avatarUrl: avatar_url,
       email: value,
-    }, (error));
+    });
     return done(null, newUser);
   } catch (error) {
     return done(error);

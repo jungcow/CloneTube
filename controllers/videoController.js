@@ -33,10 +33,7 @@ export const videoDetail = async (req, res) => {
       path: 'comments',
       populate: { path: 'creator' }
     });
-    const creatorJson = {
-      name: user.name,
-      avatar: user.avatarUrl
-    }
+    console.log(video);
     res.render('videoDetail', { video });
   } catch (error) {
     console.log(error);

@@ -7,7 +7,7 @@ const multerAvatar = multer({ dest: 'upload/avatar' });
 export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = 'Mongo Populate';
   res.locals.routes = routes;
-  res.locals.user = req.user || null;
+  res.locals.user = req.user || '';
   next();
 }
 

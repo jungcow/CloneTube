@@ -49,7 +49,11 @@ const routes = {
   kakaoCallback: '/auth/kakao/callback',
   //api
   api: '/api',
+  addView: '/:id/view',
   addComment: '/:id/comment',
+  deleteComment: '/:id/deleteComment',
+  isLoggedIn: '/isLoggedIn',
+  isCommentCreator: '/isCommentCreator',
 }
 
 export default routes;

@@ -5,7 +5,7 @@ block content
     form(action=routes.upload, method='post', enctype='multipart/form-data')
       .form__column
         .form__file
-          input(type='file', name='videoFile', placeholder='영상 불러오기')
+          input(type='file', name='videoFile', placeholder='영상 불러오기', accept='video/*')
         .form__text
           .title-container
             label(for='title') 제목:

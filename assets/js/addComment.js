@@ -2,33 +2,17 @@ import axios from 'axios';
 const commentForm = document.getElementById('jsCommentForm');
 const commentList = document.getElementById('jsCommentList');
 const commentNumber = document.getElementById('jsCommentNumber');
+const commentDeleteBtn = document.querySelector('.comment__delete');
 
-// const makeOptionBox = () => {
-//   const optionBox = document.createElement('div');
-//   const updateSpan = document.createElement('span');
-//   const deleteSpan = document.createElement('span');
-//   updateSpan.innerText = '수정';
-//   deleteSpan.innerText = '삭제';
-//   optionBox.appendChild(updateSpan);
-//   optionBox.appendChild(deleteSpan);
-//   // optionBox.classList.add('unshowing');
-//   return optionBox;
-// }
+const commentArray = [];
 
-const addComment = (comment, name, avatarUrl) => {
+const addComment = (comment, id, name, avatarUrl) => {
   const li = document.createElement('li');
   const commentContainer = document.createElement('div');
   commentContainer.className = 'comment__comment-container';
   // 첫번쨰 column
   const firstCommentColumn = document.createElement('div');
   firstCommentColumn.className = 'comment__column';
-
-  const creatorAvatarImg = document.createElement('img');
-  if (avatarUrl.startsWith('upload')) {
-    creatorAvatarImg.src = `/${avatarUrl}`;
-  } else {
-    creatorAvatarImg.src = avatarUrl;
-  }
   const contentContainer = document.createElement('div');
   contentContainer.className = 'comment__content-container';
   const creatorName = document.createElement('span');
@@ -54,7 +38,20 @@ const addComment = (comment, name, avatarUrl) => {
   contentContainer.appendChild(creatorName);
   contentContainer.appendChild(commentMessage);
   contentContainer.appendChild(commentBtnContainer);
-  firstCommentColumn.appendChild(creatorAvatarImg);
+  const creatorAvatarImg = document.createElement('img');
+  if (avatarUrl) {
+    if (avatarUrl.startsWith('upload')) {
+      creatorAvatarImg.src = `/${avatarUrl}`;
+    } else {
+      creatorAvatarImg.src = avatarUrl;
+    }
+    firstCommentColumn.appendChild(creatorAvatarImg);
+  } else {
+    const imgBox = document.createElement('div');
+    imgBox.className = 'comment__img';
+    imgBox.innerHTML = '<i class="fas fa-user fa-lg"></i>'
+    firstCommentColumn.appendChild(imgBox);
+  }
   firstCommentColumn.appendChild(contentContainer);
   // 두번째 column
   const secondCommentColumn = document.createElement('div');
@@ -62,12 +59,14 @@ const addComment = (comment, name, avatarUrl) => {
   const btnEllipsis = document.createElement('button');
   btnEllipsis.className = 'comment__menu-box';
   btnEllipsis.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+
   const optionBox = document.createElement('div');
   optionBox.className = 'comment__option-box';
   const updateOption = document.createElement('span');
   const deleteOption = document.createElement('span');
   updateOption.innerText = '수정';
   deleteOption.innerText = '삭제';
+  deleteOption.addEventListener('click', handleCommentDelete);
 
   optionBox.appendChild(updateOption);
   optionBox.appendChild(deleteOption);
@@ -75,58 +74,103 @@ const addComment = (comment, name, avatarUrl) => {
   secondCommentColumn.appendChild(optionBox);
   commentContainer.appendChild(firstCommentColumn);
   commentContainer.appendChild(secondCommentColumn);
-  li.id = Date.now().toString(36) + Math.random().toString(36).slice(3);
-  console.log(li.id);
+  li.id = id;
   li.appendChild(commentContainer);
   commentList.prepend(li);
 }
 
-// const addComment = (comment) => {
-//   const li = document.createElement('li');
-//   const commentSpan = document.createElement('span');
-//   const menuBox = document.createElement('div');
-//   const optionBox = makeOptionBox();
-//   menuBox.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
-//   menuBox.appendChild(optionBox);
-//   commentSpan.innerHTML = comment;
-//   li.appendChild(commentSpan);
-//   li.appendChild(menuBox);
-//   commentList.prepend(li);
-// }
 
+//Create Comment function
+const requestCreator = async () => {
+  const responseCreator = await axios({
+    url: '/api/isLoggedIn',
+    method: 'GET'
+  });
+  return responseCreator;
+}
 
-const requestComment = async (comment) => {
+const requestComment = async (comment, creator) => {
   const id = window.location.href.split('/video/')[1];
+  const uniqueId = Math.random().toString(36).slice(3) + Date.now().toString(36);
   const URL = `/api/${id}/comment`;
   const response = await axios({
     url: URL,
     method: 'POST',
     data: {
-      comment
+      comment,
+      uniqueId,
     }
   });
-  const responseCreator = await axios({
-    url: URL,
-    method: 'GET'
-  })
-  if (response.status === 200 && responseCreator.status === 200) {
-    const name = responseCreator.data.name;
-    const avatarUrl = responseCreator.data.avatarUrl;
-    return addComment(comment, name, avatarUrl);
+  if (response.status === 200) {
+    const name = creator.data.name;
+    const avatarUrl = creator.data.avatarUrl;
+    return addComment(comment, uniqueId, name, avatarUrl);
   }
 }
 
 
-const handleCommentSubmit = (event) => {
+
+
+//Delete function
+const requestIsCommentCreator = async (uniqueId) => {
+  const responseIsCommentCreator = await axios({
+    url: '/api/isCommentCreator',
+    method: 'POST',
+    data: {
+      uniqueId
+    }
+  })
+  return responseIsCommentCreator;
+}
+
+const deleteComment = (id) => {
+  const li = Array.from(commentList.childNodes).find(e => e.id = id)
+  commentList.removeChild(li);
+}
+
+const requestDeleteComment = async (uniqueId) => {
+  const id = window.location.href.split('/video/')[1];
+  const URL = `/api/${id}/deleteComment`;
+  const response = await axios({
+    url: URL,
+    method: 'POST',
+    data: {
+      uniqueId,
+    }
+  });
+  if (response.status === 200) {
+    return deleteComment(uniqueId);
+  }
+}
+
+//Handle Event function
+const handleCommentSubmit = async (event) => {
   event.preventDefault();
   const commentInput = commentForm.querySelector("textarea");
   const comment = commentInput.value;
-  requestComment(comment);
+  const creator = await requestCreator();
+  if (creator.status === 200) {
+    requestComment(comment, creator);
+  }
   commentInput.value = '';
-  commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) + 1;
+  commentNumber.innerText = parseInt(commentNumber.innerText, 10) + 1;
+}
+
+const handleCommentDelete = async (e) => {
+  const container = e.target.parentNode.parentNode.parentNode.parentNode;
+  const uniqueId = container.id;
+  const comment = container.childNodes[0].firstChild.lastChild.childNodes[2].innerText;
+  const creator = await requestIsCommentCreator(uniqueId);
+  if (creator.status === 200) {
+    requestDeleteComment(uniqueId);
+  }
+  commentNumber.innerText = parseInt(commentNumber.innerText, 10) - 1;
 }
 
 function init() {
+  if (commentDeleteBtn) {
+    commentDeleteBtn.addEventListener('click', handleCommentDelete);
+  }
   commentForm.addEventListener('submit', handleCommentSubmit);
 }
 
