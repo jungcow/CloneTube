@@ -4,7 +4,6 @@ const CommentSchema = new mongoose.Schema({
   uniqueId: {
     type: String,
     required: true,
-    unique: true,
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,

@@ -1,11 +1,16 @@
 extends layout/main
 
 block content
+  .record-video
+    .record-video__container
+      .preview
+      video#jsRecordPreview
+      button#jsRecordBtn 바로 녹화하기
   .form-container
     form(action=routes.upload, method='post', enctype='multipart/form-data')
       .form__column
         .form__file
-          input(type='file', name='videoFile', placeholder='영상 불러오기', accept='video/*')
+          input#jsVideoPreview(type='file', name='videoFile', placeholder='영상 불러오기', accept='video/*')
         .form__text
           .title-container
             label(for='title') 제목:

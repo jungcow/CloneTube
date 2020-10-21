@@ -3,11 +3,35 @@ import User from '../models/User';
 import Comment from '../models/Comment';
 import routes from '../routes';
 
+export const makeUploadTime = (array, receivedArray) => {
+  array.forEach((time) => {
+    const elapsed = new Date() - new Date(time);
+    if (elapsed > 31.536e9) {
+      time = `${parseInt(elapsed / 31.536e9)}년 전`;
+    } else if (elapsed <= 31.536e9 && elapsed > 2.592e9) {
+      time = `${parseInt(elapsed / 2.592e9)}개월 전`;
+    } else if (elapsed <= 2.592e9 && elapsed > 8.64e7) {
+      time = `${parseInt(elapsed / 8.64e7)}일 전`;
+    } else if (elapsed <= 8.64e7 && elapsed > 3.6e6) {
+      time = `${parseInt(elapsed / 3.6e6)}시간 전`;
+    } else if (elapsed <= 3.6e6 && elapsed > 60000) {
+      time = `${parseInt(elapsed / 60000)}분 전`
+    } else if (elapsed <= 60000 && elapsed > 1000) {
+      time = `${parseInt(elapsed / 1000)}초 전`;
+    } else {
+      time = '방금 전';
+    }
+    receivedArray.push(time);
+  })
+}
 
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({}).sort({ _id: -1 });
-    res.render('home', { videos });
+    let uploadedArray = [];
+    const videos = await Video.find({}).sort({ _id: -1 }).populate('creator');
+    const uploadedAt = videos.map((video) => video.uploadedAt);
+    makeUploadTime(uploadedAt, uploadedArray);
+    res.render('home', { videos, uploadedArray });
   } catch (error) {
     console.log(error);
   }
@@ -17,10 +41,13 @@ export const search = async (req, res) => {
   const { query: { term } } = req;
   try {
     let videos = [];
-    const creators = await User.find({ name: { $regex: term, $options: 'i' } });
+    let uploadedArray = [];
     videos = await Video.find({ title: { $regex: term, $options: 'i' } }).sort({ _id: -1 }).populate('creator');
+    const creators = await User.find({ name: { $regex: term, $options: 'i' } });
     creators.forEach(creator => videos.concat(creator.videos));
-    res.render('search', { videos, term, creators });
+    const uploadedAt = videos.map((video) => video.uploadedAt);
+    makeUploadTime(uploadedAt, uploadedArray);
+    res.render('search', { videos, term, creators, uploadedArray });
   } catch (error) {
     console.log(error);
   }
@@ -29,12 +56,17 @@ export const search = async (req, res) => {
 export const videoDetail = async (req, res) => {
   const { params: { id }, user } = req;
   try {
+    let uploadedArray = [];
     const video = await Video.findById(id).populate('creator').populate({
       path: 'comments',
       populate: { path: 'creator' }
     });
-    console.log(video);
-    res.render('videoDetail', { video });
+    console.log(video.comments.length);
+    video.comments.forEach((comment) => console.log(comment.uniqueId));
+    const recommendVideos = await Video.find({}).populate('creator');
+    const uploadedAt = recommendVideos.map((video) => video.uploadedAt);
+    makeUploadTime(uploadedAt, uploadedArray);
+    res.render('videoDetail', { video, recommendVideos, uploadedArray });
   } catch (error) {
     console.log(error);
     //no video   Error
@@ -100,7 +132,8 @@ export const deleteVideo = async (req, res) => {
   //To Do: id가 존재하지 않을 때의 오류 처리
   const { params: { id } } = req;
   try {
-    protectVideo(req);
+    const video = await Video.findById(id);
+    protectVideo(req, res, video);
     await Video.findByIdAndRemove(id);
     const user = await User.findById(req.user.id);
     if (user.videos.includes(id)) {

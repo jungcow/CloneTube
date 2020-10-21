@@ -1,23 +1,32 @@
 mixin videoBlock(video={})
   .videoBlock
-    a(href=`/video${routes.videoDetail(video.id)}`)
-      .videoBox
-        video(src=`/${video.fileUrl}`, width='100%')
-      .video-explanation
-        .video-explanation__column
-          h4.video-title=video.title
-        .video-explanation__column
-          if video.description
-            h5.video-description=video.description
-          .video-creator#jsVideoCreator
-            //- 후에 클릭 이벤트를 걸자
-            if video.creator
-                .video-creator__avatar
-                  if video.avatarUrl.startsWith('upload')
-                    img(src=`/${video.avatarUrl}`)
-                  else
-                    img(src=video.avatarUrl)
-                h5.video-creator__name=video.creator
+    //- a(href=`/video${routes.videoDetail(video.id)}`)
+    .videoBox
+      video(src=`/${video.fileUrl}`, id=video.id, width='100%')
+    .video-explanation
+      .video-explanation__column#jsVideoCreator
+        //- 후에 클릭 이벤트를 걸자
+        if video.creatorAvatarUrl
+          //- a(href=`/user/${video.creatorId}`)
+          a(href=`user${routes.profile(video.creatorId)}`)
+            .video-creator__avatar
+              if video.creatorAvatarUrl.startsWith('upload')
+                img(src=`/${video.creatorAvatarUrl}`, alt='이미지')
+              else
+                img(src=video.creatorAvatarUrl alt='이미지')
+        else if video.creatorName
+          a(href=`/user${video.creatorId}`)
+            .video-creator__avatar
+              .video__img
+      .video-explanation__column
+        .video-title
+          h4=video.title
+        .video-title__below
+          if video.creatorName
+            h5.video-creator__name=video.creatorName
           .video-explanation__viewsAndTime
-            h6.video-views #{video.views} •
-            h6.video-uploadedAt &nbsp #{video.uploadedAt.toJSON()}
+            h6.video-views 조회수 #{video.views}회
+            h6 &nbsp•&nbsp
+            h6.video-uploadedAt=video.uploadedAt
+            
+

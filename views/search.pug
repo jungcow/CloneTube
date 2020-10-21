@@ -1,20 +1,20 @@
 extends layout/main
-include mixins/videoBlock
+include mixins/searchVideoBlock
 
 block content
   .search-container
-    //- each creator in creators
-    //-   h4=creator.name
-    each video in videos
-      +videoBlock({
+    h2 결과가 #{videos.length}개 검색되었습니다.
+    each video, index in videos
+      +searchVideoBlock({
         id: video.id,
         fileUrl: video.fileUrl,
         title: video.title,
-        uploadedAt: video.uploadedAt,
+        uploadedAt: uploadedArray[index],
         views: video.views,
         description: video.description,
-        creator: video.creator.name,
-        avatarUrl: video.creator.avatarUrl,
+        creator: video.creator,
+        creatorName: video.creator.name,
+        creatorAvatarUrl: video.creator.avatarUrl,
         creatorId: video.creator.id,
       })
       

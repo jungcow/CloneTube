@@ -2,6 +2,7 @@ import routes from '../routes';
 import passport from 'passport';
 import User from '../models/User';
 import Video from '../models/Video';
+import { makeUploadTime } from './videoController';
 
 export const getJoin = (req, res) => {
   res.render('join');
@@ -98,8 +99,11 @@ export const logout = (req, res) => {
 
 export const me = async (req, res) => {
   try {
+    let uploadedArray = [];
     const user = await User.findById(req.user.id).populate('videos');
-    res.render('me', { user });
+    const uploadedAt = user.videos.map((video) => video.uploadedAt);
+    makeUploadTime(uploadedAt, uploadedArray);
+    res.render('me', { user, uploadedArray });
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);
@@ -108,8 +112,11 @@ export const me = async (req, res) => {
 export const profile = async (req, res) => {
   const { params: { id } } = req;
   try {
+    let uploadedArray = [];
     const user = await User.findById(id).populate('videos');
-    res.render('profile', { user });
+    const uploadedAt = user.videos.map((video) => video.uploadedAt);
+    makeUploadTime(uploadedAt, uploadedArray);
+    res.render('profile', { user, uploadedArray });
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);

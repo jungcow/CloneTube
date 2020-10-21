@@ -2,7 +2,7 @@ import axios from 'axios';
 const commentForm = document.getElementById('jsCommentForm');
 const commentList = document.getElementById('jsCommentList');
 const commentNumber = document.getElementById('jsCommentNumber');
-const commentDeleteBtn = document.querySelector('.comment__delete');
+const commentDeleteBtn = Array.from(document.querySelectorAll('.comment__delete'));
 
 const commentArray = [];
 
@@ -66,7 +66,6 @@ const addComment = (comment, id, name, avatarUrl) => {
   const deleteOption = document.createElement('span');
   updateOption.innerText = '수정';
   deleteOption.innerText = '삭제';
-  deleteOption.addEventListener('click', handleCommentDelete);
 
   optionBox.appendChild(updateOption);
   optionBox.appendChild(deleteOption);
@@ -77,6 +76,8 @@ const addComment = (comment, id, name, avatarUrl) => {
   li.id = id;
   li.appendChild(commentContainer);
   commentList.prepend(li);
+  console.log(commentList);
+  deleteOption.addEventListener('click', handleCommentDelete);
 }
 
 
@@ -123,10 +124,12 @@ const requestIsCommentCreator = async (uniqueId) => {
   return responseIsCommentCreator;
 }
 
-const deleteComment = (id) => {
-  const li = Array.from(commentList.childNodes).find(e => e.id = id)
-  commentList.removeChild(li);
-}
+// const deleteComment = (id) => {
+//   const li = Array.from(commentList.childNodes).find(e => e.id = id);
+//   console.log(li);
+//   commentList.removeChild(li);
+//   console.log(commentList);
+// }
 
 const requestDeleteComment = async (uniqueId) => {
   const id = window.location.href.split('/video/')[1];
@@ -138,9 +141,7 @@ const requestDeleteComment = async (uniqueId) => {
       uniqueId,
     }
   });
-  if (response.status === 200) {
-    return deleteComment(uniqueId);
-  }
+  return response;
 }
 
 //Handle Event function
@@ -157,20 +158,23 @@ const handleCommentSubmit = async (event) => {
 }
 
 const handleCommentDelete = async (e) => {
+  console.log(e.target.parentNode.parentNode.parentNode.parentNode.id);
   const container = e.target.parentNode.parentNode.parentNode.parentNode;
   const uniqueId = container.id;
   const comment = container.childNodes[0].firstChild.lastChild.childNodes[2].innerText;
   const creator = await requestIsCommentCreator(uniqueId);
   if (creator.status === 200) {
-    requestDeleteComment(uniqueId);
+    const deleteResponse = await requestDeleteComment(uniqueId);
+    if (deleteResponse.status === 200) {
+      commentList.removeChild(container);
+      console.log(commentList);
+    }
   }
   commentNumber.innerText = parseInt(commentNumber.innerText, 10) - 1;
 }
 
 function init() {
-  if (commentDeleteBtn) {
-    commentDeleteBtn.addEventListener('click', handleCommentDelete);
-  }
+  commentDeleteBtn.forEach((btn) => btn.addEventListener('click', handleCommentDelete));
   commentForm.addEventListener('submit', handleCommentSubmit);
 }
 

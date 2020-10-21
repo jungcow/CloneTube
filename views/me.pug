@@ -11,7 +11,6 @@ block content
         if user.avatarUrl
           img(src=user.avatarUrl)
         else
-          i.fas.fa-user.fa-lg
       .profile__content
         h4=user.name
     .profile__column
@@ -24,10 +23,11 @@ block content
   .profile__user
     h2 동영상
     .profile__user--videos
-      each video in user.videos
+      each video, index in user.videos
         +videoBlock({
           id: video.id,
           fileUrl: video.fileUrl,
           title: video.title,
-          uploadedAt: video.uploadedAt
+          views: video.views,
+          uploadedAt: uploadedArray[index],
         })

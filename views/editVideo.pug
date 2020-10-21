@@ -2,7 +2,7 @@ extends layout/main
 
 block content
   .form-container
-    form(action=`/video/${routes.editVideo(video.id)}`, method='post')
+    form(action=`/video${routes.editVideo(video.id)}`, method='post')
       .form__column
         //- .form__file
         //-   input(type='file', name='videoFile', placeholder='영상 불러오기')
@@ -15,3 +15,6 @@ block content
             textarea(id='description', name='description', rows=8)=video.description
       .form__column
         input(type='submit', value='업로드하기')
+    a(href=`/video${routes.deleteVideo(video.id)}`)
+      button 
+        i.fas.fa-exclamation-triangle &nbsp영상 삭제

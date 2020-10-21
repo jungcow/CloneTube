@@ -1,4 +1,5 @@
 extends layout/main
+include mixins/searchVideoBlock
 
 block content
   #jsVideoDetailBlock.videoDetail__video
@@ -37,14 +38,13 @@ block content
       .video__column
         .video__top-container
           a(href=`/user${routes.profile(video.creator.id)}`)
-            if user.avatarUrl
+            if video.creator.avatarUrl
               if video.creator.avatarUrl.startsWith('upload')
                 img(src=`/${video.creator.avatarUrl}`)
               else
                 img(src=video.creator.avatarUrl)
             else
-              .comment__img
-                i.fas.fa-user.fa-lg
+              .video__img
           .video__creatorAndDescription
             span.video__creator=video.creator.name
             span.video__subscriber 구독자:
@@ -63,6 +63,19 @@ block content
           //- a(href=`/video/${routes.subscribe(video.id)}`)
             .video__bottom-container
               button 구독
+      .search-container
+        h2 다음 동영상
+        each video, index in recommendVideos
+          +searchVideoBlock({
+            id: video.id,
+            fileUrl: video.fileUrl,
+            title: video.title,
+            uploadedAt: uploadedArray[index],
+            views: video.views,
+            creatorName: video.creator.name,
+            creatorAvatarUrl: video.creator.avatarUrl,
+            creatorId: video.creator.id,
+          })
       .video__column
         .video__comment-container
           .video__comment--column
@@ -72,14 +85,13 @@ block content
               span 개
           .video__comment--column
             .comment__add
-              if user.avatar
+              if user.avatarUrl
                 if user.avatarUrl.startsWith('upload')
                   img.comment__avatar(src=`/${user.avatarUrl}`)
                 else
                   img.comment__avatar(src=user.avatarUrl)
               else
                 .comment__img
-                  i.fas.fa-user.fa-lg
               form.comment__message#jsCommentForm
                 textarea(placeholder='공개 댓글 추가...', required)
                 input(type='submit', value='댓글')

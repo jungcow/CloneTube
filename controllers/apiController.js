@@ -16,6 +16,7 @@ export const getIsLoggedIn = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400);
+  } finally {
     res.end();
   }
 }
@@ -28,6 +29,7 @@ export const isCommentCreator = async (req, res) => {
       throw Error('No User');
     }
     const comment = await Comment.findOne({ uniqueId }).populate('creator');
+    console.log(`comment: ${comment.uniqueId}`)
     if (comment.creator.id === user.id) {
       console.log('success');
       res.status(200);
@@ -47,9 +49,7 @@ export const getAddView = async (req, res) => {
   const { params: { id } } = req;
   try {
     const video = await Video.findById(id);
-    console.log(video);
     video.views += 1;
-    console.log(video.views);
     video.save();
     res.status(200);
   } catch (error) {
@@ -61,7 +61,6 @@ export const getAddView = async (req, res) => {
 }
 
 export const postAddComment = async (req, res) => {
-  console.log('postAddComment');
   const { params: { id }, body: { comment, uniqueId }, user } = req;
   try {
     const video = await Video.findById(id);
@@ -84,11 +83,17 @@ export const postAddComment = async (req, res) => {
 export const postDeleteComment = async (req, res) => {
   const { params: { id }, body: { uniqueId }, user } = req;
   try {
-    const video = await Video.findById(id).populate('comments');
+    const video = await Video.findById(id);
+    console.log(Array.isArray(video.comments));
+    console.log(video.id);
+    video.comments.forEach((id) => console.log(id));
     const comment = await Comment.findOne({ uniqueId });
-    await Comment.findOneAndRemove({ uniqueId });
+    console.log(comment.id);
     const index = video.comments.indexOf(comment.id);
+    console.log(index);
+    await Comment.findOneAndRemove({ uniqueId });
     video.comments.splice(index, 1);
+    video.comments.forEach((comment) => console.log(comment.uniqueId));
     video.save();
   } catch (error) {
     console.log(error);

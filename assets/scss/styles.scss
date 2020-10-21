@@ -1,12 +1,13 @@
 @import 'config/reset.scss';
+@import 'config/_variable.scss';
 @import 'main.scss';
 @import 'partials/header.scss';
 @import 'partials/footer.scss';
 @import 'partials/socailLogin.scss';
 @import 'partials/comment.scss';
-@import 'pages/videoDetail.scss';
 @import 'pages/home.scss';
 @import 'pages/search.scss';
+@import 'pages/videoDetail.scss';
 @import 'pages/join.scss';
 @import 'pages/profile.scss';
 @import 'pages/upload.scss';

@@ -58,6 +58,7 @@ const handleVolumeBtn = () => {
   }
 }
 
+
 const handleExitFullScreen = () => {
   let exitFullscreen =
     document.webkitExitFullscreen ||
@@ -67,7 +68,8 @@ const handleExitFullScreen = () => {
   fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
   videoBox.style.height = '';
   videoPlayer.style.height = "";
-  videoPlayer.style.maxHeight = "52rem";
+  videoPlayer.style.maxHeight = "72vh";
+  fullscreenBtn.removeEventListener("click", handleExitFullScreen);
   fullscreenBtn.addEventListener("click", handleGoFullScreen);
 }
 
@@ -136,7 +138,7 @@ const handleLoaded = () => {
 }
 
 const handleKeyPressed = (e) => {
-  if (e.code === "Space") {
+  if (e.code === ' ' || e.code === "Space") {
     if (videoPlayer.paused) {
       videoPlayer.play();
       playBtn.innerHTML = '<i class="fas fa-pause"></i>';
