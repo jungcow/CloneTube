@@ -8,7 +8,8 @@ document.getElementById('jsVideoPreview').addEventListener('change', function (e
     fileReader.onload = function () {
       var img = document.createElement('img');
       img.src = fileReader.result;
-      document.getElementsByTagName('div')[0].appendChild(img);
+      document.querySelector('.preview').innerHTML = '';
+      document.querySelector('.preview').appendChild(img);
     };
     fileReader.readAsDataURL(file);
   } else {
@@ -39,7 +40,9 @@ document.getElementById('jsVideoPreview').addEventListener('change', function (e
           img.src = image;
           document.querySelector('.preview').innerHTML = '';
           document.querySelector('.preview').appendChild(img);
-          btnContainer.removeChild(button);
+          if (button) {
+            btnContainer.removeChild(button);
+          }
           URL.revokeObjectURL(url);
 
         }

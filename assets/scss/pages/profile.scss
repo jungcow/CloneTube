@@ -1,13 +1,25 @@
 .profile__background{
+  position: relative;
   width: 100%;
   height: 8rem;
   background-color: black;
-  z-index: 2;
-  box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.3);
+  z-index: 1;
+  // box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.3);
   img{
+    position: relative;
     width: 100%;
     height: 8rem;
     object-fit: cover;
+    z-index: 3;
+  }
+  .layer{
+    height: 10rem;
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    z-index: 2;
+    filter: blur(2rem);
+    -webkit-filter: blur(2rem);
   }
 }
 .profile__container{
@@ -25,6 +37,7 @@
       .profile__image{
         width: 6rem;
         height: 6rem;
+        object-fit: cover;
         border-radius: 50%;
         background-color: $avatarBlue;
         display: flex;

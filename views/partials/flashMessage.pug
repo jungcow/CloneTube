@@ -1,0 +1,34 @@
+include ../mixins/message.pug
+
+.flashMessage
+  if messages.accessError
+    +message({
+      type:'accessError',
+      text:messages.accessError
+    })
+  else if messages.loginError
+    +message({
+      type:'loginError',
+      text:messages.loginError
+    })
+  else if messages.failure
+    +message({
+      type:'failure',
+      text:messages.failure
+    })
+  else if messages.success
+    +message({
+      type:'success',
+      text:messages.success
+    })
+  else if messages.info
+    +message({
+      type:'info',
+      text:messages.info
+    })
+  else if messages.welcome
+    +message({
+      type:'welcome',
+      text:messages.welcome
+    })
+  

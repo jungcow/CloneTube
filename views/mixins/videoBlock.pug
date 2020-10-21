@@ -15,7 +15,7 @@ mixin videoBlock(video={})
               else
                 img(src=video.creatorAvatarUrl alt='이미지')
         else if video.creatorName
-          a(href=`/user${video.creatorId}`)
+          a(href=`/user${routes.profile(video.creatorId)}`)
             .video-creator__avatar
               .video__img
       .video-explanation__column

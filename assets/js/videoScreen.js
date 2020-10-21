@@ -10,6 +10,7 @@ let durationInput;
 let fillDurationInput;
 let playBtn;
 let volumeBtn;
+let volumeInput;
 let fullscreenBtn;
 let videoTime;
 let videoDuration;
@@ -38,6 +39,23 @@ const handleDurationChange = () => {
   videoTime.innerText = makeDurationTime(videoPlayer.currentTime);
 }
 
+const showVolumeBtn = () => {
+  if (volumeInput.value > 0.8) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else if (volumeInput.value > 0.2 && volumeInput.value <= 0.8) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>'
+  } else if (volumeInput.value > 0 && volumeInput.value <= 0.2) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-off"></i>'
+  } else if (volumeInput.value === 0) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'
+  }
+}
+
+const handleVolumeChange = () => {
+  videoPlayer.volume = volumeInput.value;
+  showVolumeBtn();
+}
+
 const handlePlayBtn = () => {
   if (videoPlayer.paused) {
     videoPlayer.play();
@@ -54,7 +72,7 @@ const handleVolumeBtn = () => {
     volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
   } else {
     videoPlayer.muted = false;
-    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    showVolumeBtn();
   }
 }
 
@@ -135,6 +153,8 @@ const handleLoaded = () => {
   durationInput.value = videoPlayer.currentTime;
   durationInput.max = videoPlayer.duration;
   fillDurationInput.style.width = `${(durationInput.value * 100) / durationInput.max}%`;
+  volumeInput.max = 1;
+  volumeInput.value = 0.5;
 }
 
 const handleKeyPressed = (e) => {
@@ -168,6 +188,7 @@ function init() {
   videoPlayer.addEventListener('pause', handleVideoPaused);
   videoPlayer.addEventListener('ended', handleVideoEnded);
   durationInput.addEventListener('input', handleDurationChange);
+  volumeInput.addEventListener('input', handleVolumeChange);
   playBtn.addEventListener('click', handlePlayBtn);
   volumeBtn.addEventListener('click', handleVolumeBtn);
   fullscreenBtn.addEventListener('click', handleGoFullScreen);
@@ -183,6 +204,7 @@ if (videoBlock) {
   videoControlBar = videoControllContainer.querySelector('.video-controlBar');
 
   durationInput = document.querySelector('.durationInput');
+  volumeInput = document.querySelector('.volumeInput');
   fillDurationInput = document.querySelector('.fill');
   videoTime = document.querySelector('.time__current');
   videoDuration = document.querySelector('.time__duration');

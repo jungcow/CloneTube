@@ -46,7 +46,6 @@ const getVideoId = (videoBlock) => {
   const video = videoBlock.querySelector('video');
   const videoId = video.id;
   const url = `${window.location.href}video/${videoId}`;
-  console.log(url);
   return url;
 }
 
@@ -55,10 +54,7 @@ const goVideoDetail = (event, block) => {
     const link = document.createElement('a');
     const url = getVideoId(block);
     link.href = url;
-    console.log(link);
     link.click();
-  } else {
-    console.log('image');
   }
 }
 

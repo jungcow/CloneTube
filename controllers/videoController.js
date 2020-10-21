@@ -70,6 +70,7 @@ export const videoDetail = async (req, res) => {
   } catch (error) {
     console.log(error);
     //no video   Error
+    req.flash('accessError', '잘못된 접근입니다');
     res.redirect(routes.home);
   }
 }
@@ -88,6 +89,7 @@ export const postUpload = async (req, res) => {
     });
     req.user.videos.push(newVideo.id)
     req.user.save();
+    req.flash('info', '성공적으로 업로드 하였습니다');
     res.redirect(`/video/${routes.videoDetail(newVideo.id)}`);
   } catch (error) {
     console.log(error);
@@ -109,7 +111,8 @@ export const getEditVideo = async (req, res) => {
     res.render('editVideo', { video });
   } catch (error) {
     console.log(error);
-    res.redirect(`/video/${routes.videoDetail(id)}`);
+    req.flash('accessError', '잘못된 접근입니다');
+    res.redirect(`/video${routes.videoDetail(id)}`);
   }
 }
 
@@ -121,6 +124,7 @@ export const postEditVideo = async (req, res) => {
       title,
       description
     });
+    req.flash('info', '영상 수정 완료');
     res.redirect(`/video${routes.videoDetail(id)}`);
   } catch (error) {
     console.log(error);
@@ -141,7 +145,9 @@ export const deleteVideo = async (req, res) => {
       await user.videos.splice(index, 1);
       user.save();
     }
+    req.flash('info', "성공적으로 영상을 삭제하였습니다");
   } catch (error) {
+    req.flash('accessError', '잘못된 접근입니다');
     console.log(error);
   } finally {
     res.redirect(routes.home);

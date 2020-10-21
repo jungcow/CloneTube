@@ -5,6 +5,7 @@ import routes from '../routes';
 export const getIsLoggedIn = async (req, res) => {
   try {
     if (!req.user) {
+      req.flash('accessError', '로그인 필요');
       res.redirect(routes.login);
       throw Error('No User');
     }
@@ -25,16 +26,17 @@ export const isCommentCreator = async (req, res) => {
   const { body: { uniqueId }, user } = req;
   try {
     if (!req.user) {
+      req.flash('accessError', '로그인 필요');
       res.redirect(routes.login);
       throw Error('No User');
     }
     const comment = await Comment.findOne({ uniqueId }).populate('creator');
-    console.log(`comment: ${comment.uniqueId}`)
     if (comment.creator.id === user.id) {
       console.log('success');
       res.status(200);
     } else {
       console.log('not match');
+      req.flash('accessError', '잘못된 접근입니다');
       res.status(400);
     }
   } catch (error) {
@@ -71,8 +73,10 @@ export const postAddComment = async (req, res) => {
     })
     video.comments.push(newComment.id);
     video.save();
+    req.flash('info', "댓글 등록 완료");
   } catch (error) {
     console.log(error);
+    req.flash('accessError', '잘못된 접근입니다');
     res.status(400);
     res.redirect(`/video${routes.videoDetail(id)}`);
   } finally {
@@ -84,20 +88,17 @@ export const postDeleteComment = async (req, res) => {
   const { params: { id }, body: { uniqueId }, user } = req;
   try {
     const video = await Video.findById(id);
-    console.log(Array.isArray(video.comments));
-    console.log(video.id);
     video.comments.forEach((id) => console.log(id));
     const comment = await Comment.findOne({ uniqueId });
-    console.log(comment.id);
     const index = video.comments.indexOf(comment.id);
-    console.log(index);
     await Comment.findOneAndRemove({ uniqueId });
     video.comments.splice(index, 1);
     video.comments.forEach((comment) => console.log(comment.uniqueId));
     video.save();
+    req.flash('info', "댓글 삭제 완료");
   } catch (error) {
     console.log(error);
-    //flash error message
+    req.flash('accessError', '잘못된 접근입니다');
     res.status(400);
   } finally {
     res.end();

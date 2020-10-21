@@ -12,16 +12,21 @@ export const postJoin = async (req, res, next) => {
   const { body: { name, email, password, password2 } } = req;
   try {
     if (password !== password2) {
+      req.flash('loginError', '비밀번호를 다시 확인해주세요')
+      throw Error('password error');
+    }
+    const user = await User.findOne({ email });
+    if (user) {
+      console.log(user);
+      req.flash('loginError', '이미 사용중인 이메일 입니다');
       return res.redirect(routes.join);
     }
     const newUser = await User({
       name,
       email
     });
-    // if (newUser){
-    // return flash
-    // }
     await User.register(newUser, password);
+    req.flash('welcome', `환영합니다 ${name}님`)
     next();
   } catch (error) {
     console.log(error);
@@ -36,8 +41,10 @@ export const getLogin = (req, res) => {
 
 //LOCAL LOGIN CONTROLLER
 export const postLogin = passport.authenticate('local', {
+  successRedirect: routes.home,
   failureRedirect: routes.login,
-  successRedirect: routes.home
+  successFlash: '로그인 완료',
+  failureFlash: '아이디 또는 비밀번호를 다시 확인해주시기 바랍니다.',
 });
 
 //GITHUB LOGIN CONTROLLER
@@ -93,6 +100,7 @@ export const kakaoCallback = async (accessToken, refreshToken, profile, cb) => {
 }
 
 export const logout = (req, res) => {
+  req.flash('info', `안녕히 가세요 ${req.user.name}님`);
   req.logout();
   res.redirect(routes.home);
 }
@@ -118,6 +126,7 @@ export const profile = async (req, res) => {
     makeUploadTime(uploadedAt, uploadedArray);
     res.render('profile', { user, uploadedArray });
   } catch (error) {
+    req.flash('accessError', '잘못된 접근입니다');
     console.log(error);
     res.redirect(routes.home);
   }
@@ -134,6 +143,7 @@ export const postEditProfile = async (req, res) => {
       email,
       avatarUrl: file ? file.path : req.user.avatarUrl
     });
+    req.flash('info', "프로필 수정 완료");
   } catch (error) {
     console.log(error);
     res.redirect(`/user${routes.editProfile}`);
@@ -148,11 +158,14 @@ export const getChangePassword = (req, res) => {
 export const postChangePassword = async (req, res) => {
   const { body: { currentPassword, newPassword, newPassword2 } } = req;
   if (newPassword !== newPassword2) {
-    return res.redirect(routes.changePassword);
+    req.flash('loginError', '비밀번호를 다시 확인해주세요')
+    res.redirect(routes.changePassword);
+    throw Error('password error');
   }
   try {
     const user = await User.findOne({ _id: req.user.id });
     user.changePassword(currentPassword, newPassword);
+    req.flash('info', "비밀번호 변경 완료");
     res.redirect(routes.editProfile);
   } catch (error) {
     console.log(error);

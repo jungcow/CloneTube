@@ -1,0 +1,41 @@
+.flashContainer{
+  position: fixed;
+  top: 0.1rem;
+  left: 1rem;
+  min-width: 10rem;
+  min-height: 3rem;
+  padding: 0.5rem;
+  background-color: $headerBlack;
+  color: #f7f7f7;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid red;
+  border-radius: 1rem;
+  z-index: 21;
+  animation: flashMessage 4s ease-in-out forwards;
+  box-shadow: 0 0 2rem 1rem rgba(255, 0, 0, 0.8);
+  &.info{
+    border: 1px solid rgb(173, 255, 47);
+    box-shadow: 0 0 2rem 1rem rgba(173, 255, 47, 0.8);
+  }
+  &.success,
+  &.welcome{
+    border: 1px solid rgb(47, 172, 255);
+    box-shadow: 0 0 2rem 1rem rgba(47, 172, 255, 0.8);
+  }
+}
+
+@keyframes flashMessage{
+  0%{
+    transform: translateX(-14rem);
+  }15%{
+    transform: translateX(0.5rem);
+  }85%{
+    transform: translateX(0.5rem);
+  }100%{
+    transform: translateX(-14rem);
+  }
+}

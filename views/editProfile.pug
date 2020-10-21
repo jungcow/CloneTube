@@ -3,9 +3,7 @@ extends layout/main
 block content
   .form-container
     form(action=`/user${routes.editProfile}`, method="post", enctype="multipart/form-data")
-      .fileUpload
-        label(for="avatar") 프로필 사진
-        input(type="file", id="avatar", name="avatar", accept="image/*")
+      input(type="file", id="avatar", name="avatar", accept="image/*")
       input(type="text", placeholder="이름", name="name", value=user.name)
       input(type="email", placeholder="이메일", name="email", value=user.email)
       input(type="submit", value="수정하기")

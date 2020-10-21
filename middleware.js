@@ -15,12 +15,14 @@ export const onlyPrivate = (req, res, next) => {
   if (req.user) {
     return next();
   }
+  req.flash('accessError', '로그인이 필요합니다');
   return res.redirect(routes.home);
 }
 export const onlyPublic = (req, res, next) => {
   if (!req.user) {
     return next();
   }
+  req.flash('accessError', '잘못된 접근입니다');
   return res.redirect(routes.home);
 }
 
