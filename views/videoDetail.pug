@@ -65,12 +65,12 @@ block content
               button 구독
       .search-container
         h2 다음 동영상
-        each video, index in recommendVideos
+        each video in recommendVideos
           +searchVideoBlock({
             id: video.id,
             fileUrl: video.fileUrl,
             title: video.title,
-            uploadedAt: uploadedArray[index],
+            uploadedAt: video.pastDate,
             views: video.views,
             creatorName: video.creator.name,
             creatorAvatarUrl: video.creator.avatarUrl,

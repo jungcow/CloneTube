@@ -1,14 +1,12 @@
 mixin videoBlock(video={})
   .videoBlock
-    //- a(href=`/video${routes.videoDetail(video.id)}`)
     .videoBox
       video(src=`/${video.fileUrl}`, id=video.id, width='100%')
     .video-explanation
       .video-explanation__column#jsVideoCreator
         //- 후에 클릭 이벤트를 걸자
         if video.creatorAvatarUrl
-          //- a(href=`/user/${video.creatorId}`)
-          a(href=`user${routes.profile(video.creatorId)}`)
+          a(href=`/user${routes.profile(video.creatorId)}`)
             .video-creator__avatar
               if video.creatorAvatarUrl.startsWith('upload')
                 img(src=`/${video.creatorAvatarUrl}`, alt='이미지')

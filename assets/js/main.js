@@ -4,4 +4,5 @@ import './addComment.js';
 import './videoScreen.js';
 import './recordVideo.js';
 import './videoPreview.js';
+import './infiniteScroll.js';
 import '../scss/partials/comment.scss';

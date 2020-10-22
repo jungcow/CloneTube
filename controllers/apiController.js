@@ -1,6 +1,7 @@
 import Video from '../models/Video';
 import Comment from '../models/Comment';
 import routes from '../routes';
+import { makeUploadTime } from './videoController';
 
 export const getIsLoggedIn = async (req, res) => {
   try {
@@ -99,6 +100,36 @@ export const postDeleteComment = async (req, res) => {
   } catch (error) {
     console.log(error);
     req.flash('accessError', '잘못된 접근입니다');
+    res.status(400);
+  } finally {
+    res.end();
+  }
+}
+
+export const pageInVideos = 6;
+
+
+export const moreVideos = async (req, res) => {
+  const { body: { page } } = req;
+  let uploadedArray = [];
+  let randomArray = [];
+  let arrayObject = {};
+  try {
+    const videos = await Video.find({}).populate('creator').skip((page - 1) * pageInVideos).limit(pageInVideos);
+    const uploadedAt = videos.map((video) => video.uploadedAt);
+    makeUploadTime(uploadedAt, uploadedArray, randomArray);
+    videos.forEach((video, index) => {
+      video.pastDate = uploadedArray[index];
+      video.random = randomArray[index];
+      video.save();
+    })
+    videos.sort((a, b) => {
+      return b.random - a.random;
+    })
+    arrayObject.videos = videos;
+    res.json(videos);
+  } catch (error) {
+    console.log(error);
     res.status(400);
   } finally {
     res.end();

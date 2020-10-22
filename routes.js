@@ -54,6 +54,7 @@ const routes = {
   deleteComment: '/:id/deleteComment',
   isLoggedIn: '/isLoggedIn',
   isCommentCreator: '/isCommentCreator',
+  moreVideos: '/moreVideos',
 }
 
 export default routes;

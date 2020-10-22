@@ -4,12 +4,12 @@ include mixins/searchVideoBlock
 block content
   .search-container
     h2 결과가 #{videos.length}개 검색되었습니다.
-    each video, index in videos
+    each video in videos
       +searchVideoBlock({
         id: video.id,
         fileUrl: video.fileUrl,
         title: video.title,
-        uploadedAt: uploadedArray[index],
+        uploadedAt: video.pastDate,
         views: video.views,
         description: video.description,
         creator: video.creator,

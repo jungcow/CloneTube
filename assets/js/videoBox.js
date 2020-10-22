@@ -23,12 +23,10 @@ function handleSearchResize() {
 
 
 const mouseenter = (video) => {
-  console.log('hover');
   video.muted = true;
   video.autoplay = true;
   video.load();
   mouseTimer = setTimeout(() => {
-    console.log('finish');
     video.currentTime = 0;
     video.autoplay = false;
     video.load();

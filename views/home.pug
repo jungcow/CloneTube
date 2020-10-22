@@ -3,13 +3,13 @@ include mixins/videoBlock
 
 block content
   .video-container
-    each video, index in videos
+    each video in videos
       +videoBlock({
         id: video.id,
         fileUrl: video.fileUrl,
         title: video.title,
         views: video.views,
-        uploadedAt: uploadedArray[index],
+        uploadedAt: video.pastDate,
         creatorId : video.creator.id,
         creatorName: video.creator.name,
         creatorAvatarUrl: video.creator.avatarUrl
