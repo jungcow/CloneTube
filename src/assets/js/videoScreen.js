@@ -204,7 +204,8 @@ const handleMouseMove = () => {
 function init() {
   videoPlayer.volume = 0.5;
   videoBoxContainer.addEventListener('mousemove', handleMouseMove);
-  videoPlayer.addEventListener('loadedmetadata', handleLoaded);
+  // videoPlayer.addEventListener('loadedmetadata', handleLoaded);
+  document.addEventListener('readystatechange', handleLoaded);
   videoPlayer.addEventListener('play', handleVideoPlaying);
   videoPlayer.addEventListener('pause', handleVideoPaused);
   videoPlayer.addEventListener('ended', handleVideoEnded);
