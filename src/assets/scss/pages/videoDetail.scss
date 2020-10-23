@@ -317,7 +317,17 @@
 
 .videoDetail__video{
   .search-container{
+    // width: 100%;
+    padding: 0 1rem;
+    // margin: 0 1rem;
+    @media screen and (max-width: 600px){
+      width: 100%;
+      padding: 0;
+    }
     h2{
+      @media screen and (max-width: 600px){
+        margin-left: 1rem;
+      }
       font-size: 1rem;
       font-style: initial;
       margin-top: 0.4rem;

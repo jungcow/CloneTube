@@ -29,11 +29,15 @@
   padding: 2rem 0;
   width: 75%;
   margin: 0 auto;
+  @media screen and (max-width: 600px){
+    margin: 0 auto;
+    width: 90%;
+  }
   .profile__column{
     &:first-child{
       display: flex;
       align-items: center;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       .profile__image{
         width: 6rem;
         height: 6rem;
@@ -44,18 +48,25 @@
         align-items: center;
         justify-content: center;
         margin-right: 1rem;
+        @media screen and (max-width: 600px){
+          width: 3.5rem;
+          height: 3.5rem;
+        }
         img{
           width: 6rem;
           height: 6rem;
           border-radius: 50%;
           overflow: hidden;
+          @media screen and (max-width: 600px){
+            width: 3.5rem;
+            height: 3.5rem;
+          }
         }
       }
       .profile__content{
         margin-right: 2rem;
         height: 6rem;
         min-width: 4rem;
-        // background-color: red;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -69,6 +80,9 @@
         margin: 0.25rem 0 0.25rem 1rem;
         button{
           width: 8rem;
+          @media screen and (max-width: 600px){
+            max-width: 5rem;
+          }
         }
       }
     }
@@ -88,7 +102,6 @@
   }
   .profile__user--videos{
     width: 100%;
-    // display: grid;
     display: flex;
       justify-content: center;
       align-items: center;
