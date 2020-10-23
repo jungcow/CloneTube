@@ -1,59 +1,12 @@
 .form-container{
   width: 100%;
-  // min-height: 60vh;
   form{
     width: 90%;
     height: 100%;
     padding-bottom: 2rem;
-    .form__column{
-      &:first-child{
-        height: 20rem;
-        display: flex;
-        flex-direction: row-reverse;
-        align-items: flex-start;
-        margin-bottom: 0.5rem;
-        .form__file{
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          margin-left: 2rem;
-          input[type='file']{
-            background-color: #f7f7f7;
-            height: 100%;
-            color: black;
-            margin: 2.5rem 0 5rem;
-          }
-        }
-        .form__text{
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-around;
-          .title-container{
-            width: 100%;
-            display: flex;
-            align-items: center;
-            label{
-              width: 15%;
-            }
-            input{
-              width: 100%;
-            }
-          }
-          .textarea-container{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            label{
-              margin-bottom: 0.5rem;
-            }
-            textarea{
-              width: 100%;
-            }
-          }
-        }
-      }
+    textarea{
+      width: 15rem;
+      margin-bottom: 0.5rem;
     }
   }
 }

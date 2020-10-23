@@ -1,6 +1,12 @@
 .search-container{
   padding: 0 1.5rem;
+  @media screen and (max-width: 600px){
+    padding: 0;
+  }
   h2{
+    @media screen and (max-width: 600px){
+      margin-left: 1.5rem;
+    }
     height: 3rem;
     font-size: 0.8rem;
     font-style: oblique;

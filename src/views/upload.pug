@@ -11,15 +11,7 @@ block content
       button#jsRecordBtn 바로 녹화하기
   .form-container
     form(action=routes.upload, method='post', enctype='multipart/form-data')
-      .form__column
-        .form__file
-          input#jsVideoPreview(type='file', name='videoFile', placeholder='영상 불러오기', accept='video/*')
-        .form__text
-          .title-container
-            label(for='title') 제목:
-            input(type='text', name='title', id='title', placeholder='제목', maxlength='30')
-          .textarea-container
-            label(for='description') 영상에 대해 간략히 설명을 적어주시기 바랍니다.
-            textarea(id='description', name='description', rows=8) 설명...
-      .form__column
-        input(type='submit', value='업로드하기')
+      input#jsVideoPreview(type='file', name='videoFile', placeholder='영상 불러오기', accept='video/*')
+      input(type='text', name='title', id='title', placeholder='제목', maxlength='30')
+      textarea(id='description', name='description', rows=8) 설명...
+      input(type='submit', value='업로드하기')
