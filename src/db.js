@@ -3,12 +3,15 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL_PROD, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
-}).catch(err => console.log(err));
+mongoose.connect(
+  process.env.PRODUCTION ? process.env.MONGO_URL_PROD : process.env.MONGO_URL,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  }
+).catch(err => console.log(err));
 
 const db = mongoose.connection;
 
