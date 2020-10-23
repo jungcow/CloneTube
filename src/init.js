@@ -1,3 +1,5 @@
+import '@babel/polyfill';
+import '@babel/core';
 import dotenv from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -32,8 +34,8 @@ const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-app.use('/upload', express.static('upload'));
-app.use('/static', express.static('static'));
+// app.use('/upload', express.static('upload'));
+app.use('/static', express.static(path.join(__dirname, "static")));
 
 app.use(morgan('dev'));
 app.use(helmet({ contentSecurityPolicy: false }));
