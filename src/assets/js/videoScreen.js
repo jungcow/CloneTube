@@ -164,12 +164,12 @@ const handleVideoEnded = () => {
 
 const handleLoaded = async () => {
   const blob = await fetch(videoPlayer.src).then(res => {
-    videoDuration.innerHTML = 'loading';
+    videoDuration.innerText = 'loading';
     return res.blob();
   });
   const duration = await getBlobDuration(blob);
-  const DURATION = await makeDurationTime(parseInt(duration));
-  videoDuration.textContent = DURATION;
+  const DURATION = makeDurationTime(parseInt(duration));
+  videoDuration.innerText = DURATION;
   durationInput.value = videoPlayer.currentTime;
   durationInput.max = duration;
   fillDurationInput.style.width = `${(durationInput.value * 100) / durationInput.max}%`;

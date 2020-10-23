@@ -138,6 +138,7 @@ export const getEditProfile = async (req, res) => {
 
 export const postEditProfile = async (req, res) => {
   const { body: { name, email }, file } = req;
+  console.log(file);
   try {
     const user = await User.findOneAndUpdate(req.user.id, {
       name,
