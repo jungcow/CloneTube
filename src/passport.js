@@ -13,7 +13,9 @@ passport.use(User.createStrategy());
 passport.use(new GithubStrategy({
   clientID: process.env.GITHUB_ID,
   clientSecret: process.env.GITHUB_SECRET,
-  callbackURL: "http://localhost:4003/auth/github/callback",
+  callbackURL: process.env.PRODUCTION
+    ? `https://pacific-garden-75555.herokuapp.com${routes.githubCallback}`
+    : `http://localhost:4003${routes.githubCallback}`,
   scope: ['user:email'],
 },
   githubCallback
@@ -23,8 +25,8 @@ passport.use(new KakaoStrategy({
   clientID: process.env.KAKAO_ID,
   clientSecret: '',
   callbackURL: process.env.PRODUCTION
-    ? `https://pacific-garden-75555.herokuapp.com${routes.githubCallback}`
-    : `http://localhost:4003${routes.githubCallback}`,
+    ? `https://pacific-garden-75555.herokuapp.com${routes.kakaoCallback}`
+    : `http://localhost:4003${routes.kakaoCallback}`,
 },
   kakaoCallback
 ))
