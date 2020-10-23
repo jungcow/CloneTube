@@ -27,7 +27,7 @@ block content
   .profile__user
     h2 동영상
     .profile__user--videos
-      each video, index in user.videos
+      each video, index in user.videos.reverse()
         +videoBlock({
           id: video.id,
           fileUrl: video.fileUrl,

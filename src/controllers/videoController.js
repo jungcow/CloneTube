@@ -102,7 +102,7 @@ export const videoDetail = async (req, res) => {
       path: 'comments',
       populate: { path: 'creator' }
     });
-    const recommendVideos = await Video.find({}).limit(1).populate('creator');
+    const recommendVideos = await Video.find({}).limit(8).populate('creator');
     const uploadedAt = recommendVideos.map((a) => a.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray, randomArray);
     recommendVideos.forEach((a, index) => {
