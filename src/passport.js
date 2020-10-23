@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import passport from 'passport';
 import GithubStrategy from 'passport-github2';
 import KakaoStrategy from 'passport-kakao';
+import routes from './routes';
 import { githubCallback, kakaoCallback } from './controllers/userController';
 import User from './models/User';
 
@@ -21,7 +22,9 @@ passport.use(new GithubStrategy({
 passport.use(new KakaoStrategy({
   clientID: process.env.KAKAO_ID,
   clientSecret: '',
-  callbackURL: 'http://localhost:4003/auth/kakao/callback',
+  callbackURL: process.env.PRODUCTION
+    ? `https://pacific-garden-75555.herokuapp.com${routes.githubCallback}`
+    : `http://localhost:4003${routes.githubCallback}`,
 },
   kakaoCallback
 ))
