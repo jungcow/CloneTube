@@ -58,12 +58,16 @@
     }
   }
   .column:last-child{
-    margin-left: 1.5rem;
-    min-width: 15rem;
-    height: 3rem;
+    margin-left: 0.7rem;
+    min-width: 10rem;
+    height: 1rem;
     justify-content: space-around;
+    align-items: center;
     .column-child{
-      margin-left: 1rem;
+      margin-left: 0.1rem;
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
     }
   }
 }

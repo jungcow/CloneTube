@@ -5,4 +5,5 @@ import './videoScreen.js';
 import './recordVideo.js';
 import './videoPreview.js';
 import './infiniteScroll.js';
+import './header.js';
 import '../scss/partials/comment.scss';
