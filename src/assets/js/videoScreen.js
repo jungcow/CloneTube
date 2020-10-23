@@ -106,8 +106,18 @@ const handleGoFullScreen = () => {
   fullscreenBtn.addEventListener("click", handleExitFullScreen);
 }
 
+// <?xml version="1.0" encoding="UTF-8"?>
+// <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+// <CORSRule>
+//     <AllowedOrigin>*</AllowedOrigin>
+//     <AllowedMethod>GET</AllowedMethod>
+//     <MaxAgeSeconds>3000</MaxAgeSeconds>
+//     <AllowedHeader>Authorization</AllowedHeader>
+// </CORSRule>
+// </CORSConfiguration>
 
 const makeDurationTime = (duration) => {
+  console.log('calculating');
   const durationTime = parseInt(duration, 10);
   let time, hours, minutes, seconds;
   if (durationTime < 3600) {
@@ -115,6 +125,7 @@ const makeDurationTime = (duration) => {
     seconds = durationTime % 60;
     seconds = seconds < 10 ? `0${seconds}` : seconds;
     time = `${minutes}:${seconds}`;
+    console.log(time);
     return time;
   }
   hours = parseInt(durationTime / 3600, 10);
@@ -152,15 +163,17 @@ const handleVideoEnded = () => {
 }
 
 const handleLoaded = async () => {
-  const blob = await fetch(videoPlayer.src)
-    .then(res => res.blob());
+  const blob = await fetch(videoPlayer.src).then(res => {
+    videoDuration.innerHTML = 'loading';
+    return res.blob();
+  });
   const duration = await getBlobDuration(blob);
-  videoDuration.innerText = `${makeDurationTime(parseInt(duration))}`;
+  const DURATION = await makeDurationTime(parseInt(duration));
+  videoDuration.textContent = DURATION;
   durationInput.value = videoPlayer.currentTime;
   durationInput.max = duration;
   fillDurationInput.style.width = `${(durationInput.value * 100) / durationInput.max}%`;
   volumeInput.max = 1;
-  console.log(volumeInput.max);
   volumeInput.value = 0.5;
 }
 
@@ -189,6 +202,7 @@ const handleMouseMove = () => {
 }
 
 function init() {
+  videoPlayer.volume = 0.5;
   videoBoxContainer.addEventListener('mousemove', handleMouseMove);
   videoPlayer.addEventListener('loadedmetadata', handleLoaded);
   videoPlayer.addEventListener('play', handleVideoPlaying);

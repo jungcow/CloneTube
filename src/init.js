@@ -37,15 +37,24 @@ app.set('views', path.join(__dirname, 'views'));
 // app.use('/upload', express.static('upload'));
 app.use('/static', express.static(path.join(__dirname, "static")));
 
-app.use(morgan('dev'));
+if (process.env.PRODUCTION) {
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-  resave: true,
+  resave: false,
   saveUninitialized: false,
   secret: process.env.SESSION_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: true,
+  },
+  proxy: true,
   store: new SessionStore({ mongooseConnection: mongoose.connection })
 }));
 app.use(flash());
