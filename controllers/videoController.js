@@ -50,7 +50,7 @@ export const home = async (req, res) => {
   try {
     let uploadedArray = [];
     let randomArray = [];
-    const videos = await Video.find({}).limit(pageInVideos).sort({ _id: -1 }).populate('creator');
+    const videos = await Video.find({}).sort({ _id: -1 }).limit(pageInVideos).populate('creator');
     const uploadedAt = videos.map((video) => video.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray, randomArray);
     videos.forEach((video, index) => {
@@ -103,7 +103,7 @@ export const videoDetail = async (req, res) => {
     });
     // console.log(video.comments.length);
     video.comments.forEach((comment) => console.log(comment.uniqueId));
-    const recommendVideos = await Video.find({}).populate('creator');
+    const recommendVideos = await Video.find({}).limit(8).populate('creator');
     const uploadedAt = recommendVideos.map((video) => video.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray, randomArray);
     recommendVideos.forEach((video, index) => {
@@ -130,12 +130,13 @@ export const getUpload = (req, res) => {
   res.render('upload');
 }
 export const postUpload = async (req, res) => {
-  const { body: { title, description }, file: { path } } = req;
+  const { body: { title, description }, file: { location } } = req;
+  console.log(req.file);
   try {
     const newVideo = await Video.create({
       title,
       description: description || '.',
-      fileUrl: path,
+      fileUrl: location,
       creator: req.user.id,
     });
     req.user.videos.push(newVideo.id)

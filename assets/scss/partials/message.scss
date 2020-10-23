@@ -1,6 +1,6 @@
 .flashContainer{
   position: fixed;
-  top: 0.1rem;
+  top: 4rem;
   left: 1rem;
   min-width: 10rem;
   min-height: 3rem;
@@ -30,12 +30,12 @@
 
 @keyframes flashMessage{
   0%{
-    transform: translateX(-14rem);
+    transform: translateX(-16rem);
   }15%{
     transform: translateX(0.5rem);
   }85%{
     transform: translateX(0.5rem);
   }100%{
-    transform: translateX(-14rem);
+    transform: translateX(-16rem);
   }
 }

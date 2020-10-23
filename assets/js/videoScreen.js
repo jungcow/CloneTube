@@ -1,4 +1,5 @@
 import axios from 'axios';
+import getBlobDuration from 'get-blob-duration';
 
 const videoBlock = document.getElementById('jsVideoDetailBlock');
 let videoBoxContainer;
@@ -127,10 +128,12 @@ const makeDurationTime = (duration) => {
 }
 
 let timer;
-const handleVideoPlaying = () => {
+const handleVideoPlaying = async () => {
+  const blob = await fetch(videoPlayer.src).then(res => res.blob());
+  const duration = await getBlobDuration(blob);
   timer = setInterval(() => {
     durationInput.value = videoPlayer.currentTime;
-    fillDurationInput.style.width = `${videoPlayer.currentTime * 100 / videoPlayer.duration
+    fillDurationInput.style.width = `${videoPlayer.currentTime * 100 / duration
       }%`;
     videoTime.innerText = `${makeDurationTime(videoPlayer.currentTime)}`;
   }, 10);
@@ -148,10 +151,12 @@ const handleVideoEnded = () => {
   requestView();
 }
 
-const handleLoaded = () => {
-  videoDuration.innerText = `${makeDurationTime(videoPlayer.duration)}`;
+const handleLoaded = async () => {
+  const blob = await fetch(videoPlayer.src).then(res => res.blob());
+  const duration = await getBlobDuration(blob);
+  videoDuration.innerText = `${makeDurationTime(parseInt(duration))}`;
   durationInput.value = videoPlayer.currentTime;
-  durationInput.max = videoPlayer.duration;
+  durationInput.max = duration;
   fillDurationInput.style.width = `${(durationInput.value * 100) / durationInput.max}%`;
   volumeInput.max = 1;
   volumeInput.value = 0.5;

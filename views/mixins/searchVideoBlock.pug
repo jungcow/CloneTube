@@ -2,7 +2,7 @@ mixin searchVideoBlock(video={})
   .searchVideoBlock
     a(href=`/video${routes.videoDetail(video.id)}`)
       .videoBox
-        video(src=`/${video.fileUrl}`, width='100%')
+        video(src=video.fileUrl, width='100%')
       .video-explanation
         .video-explanation__column
           h4.video-title=video.title

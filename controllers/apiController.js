@@ -74,7 +74,7 @@ export const postAddComment = async (req, res) => {
     })
     video.comments.push(newComment.id);
     video.save();
-    req.flash('info', "댓글 등록 완료");
+    // req.flash('info', "댓글 등록 완료");
   } catch (error) {
     console.log(error);
     req.flash('accessError', '잘못된 접근입니다');
@@ -96,7 +96,7 @@ export const postDeleteComment = async (req, res) => {
     video.comments.splice(index, 1);
     video.comments.forEach((comment) => console.log(comment.uniqueId));
     video.save();
-    req.flash('info', "댓글 삭제 완료");
+    // req.flash('info', "댓글 삭제 완료");
   } catch (error) {
     console.log(error);
     req.flash('accessError', '잘못된 접근입니다');
@@ -106,7 +106,7 @@ export const postDeleteComment = async (req, res) => {
   }
 }
 
-export const pageInVideos = 6;
+export const pageInVideos = 12;
 
 
 export const moreVideos = async (req, res) => {
@@ -115,7 +115,7 @@ export const moreVideos = async (req, res) => {
   let randomArray = [];
   let arrayObject = {};
   try {
-    const videos = await Video.find({}).populate('creator').skip((page - 1) * pageInVideos).limit(pageInVideos);
+    const videos = await Video.find({}).sort({ _id: -1 }).skip((page - 1) * pageInVideos).limit(pageInVideos).populate('creator');
     const uploadedAt = videos.map((video) => video.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray, randomArray);
     videos.forEach((video, index) => {

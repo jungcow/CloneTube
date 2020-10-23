@@ -1,7 +1,7 @@
 import express from 'express';
 import routes from '../routes';
 import passport from 'passport';
-import { getJoin, getLogin, github, kakao, logout, me, postJoin, postLogin } from '../controllers/userController';
+import { getJoin, getLogin, github, isUser, kakao, logout, me, postJoin, postLogin } from '../controllers/userController';
 import { getUpload, home, postUpload, search } from '../controllers/videoController';
 import { onlyPrivate, onlyPublic, uploadVideo } from '../middleware';
 

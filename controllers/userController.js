@@ -17,7 +17,6 @@ export const postJoin = async (req, res, next) => {
     }
     const user = await User.findOne({ email });
     if (user) {
-      console.log(user);
       req.flash('loginError', '이미 사용중인 이메일 입니다');
       return res.redirect(routes.join);
     }
@@ -40,12 +39,14 @@ export const getLogin = (req, res) => {
 }
 
 //LOCAL LOGIN CONTROLLER
+
 export const postLogin = passport.authenticate('local', {
   successRedirect: routes.home,
   failureRedirect: routes.login,
   successFlash: '로그인 완료',
   failureFlash: '아이디 또는 비밀번호를 다시 확인해주시기 바랍니다.',
 });
+
 
 //GITHUB LOGIN CONTROLLER
 export const github = passport.authenticate('github');
@@ -141,7 +142,7 @@ export const postEditProfile = async (req, res) => {
     const user = await User.findOneAndUpdate(req.user.id, {
       name,
       email,
-      avatarUrl: file ? file.path : req.user.avatarUrl
+      avatarUrl: file ? file.location : req.user.avatarUrl
     });
     req.flash('info', "프로필 수정 완료");
   } catch (error) {

@@ -1,7 +1,7 @@
 mixin videoBlock(video={})
   .videoBlock
     .videoBox
-      video(src=`/${video.fileUrl}`, id=video.id, width='100%')
+      video(src=video.fileUrl, id=video.id, width='100%')
     .video-explanation
       .video-explanation__column#jsVideoCreator
         //- 후에 클릭 이벤트를 걸자

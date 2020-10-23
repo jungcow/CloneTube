@@ -43,7 +43,7 @@ const mouseleave = (video) => {
 const getVideoId = (videoBlock) => {
   const video = videoBlock.querySelector('video');
   const videoId = video.id;
-  const url = `${window.location.href}video/${videoId}`;
+  const url = `/video/${videoId}`;
   return url;
 }
 
