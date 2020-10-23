@@ -1,6 +1,9 @@
 extends layout/main
 include mixins/searchVideoBlock
 
+block title
+  | #{pageTitle} | #{siteName}
+
 block content
   .search-container
     h2 결과가 #{videos.length}개 검색되었습니다.

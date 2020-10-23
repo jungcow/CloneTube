@@ -177,7 +177,7 @@ const handleSrcoll = () => {
   const scrolledHeight = window.scrollY;
   const browserHeight = window.innerHeight;
   const x = wholeHeight - (scrolledHeight + browserHeight);
-  if (x < 0) {
+  if (scrolledHeight > 200 && x < 0) {
     if (status) {
       requestMoreVideo(page);
       status = false;
@@ -190,4 +190,6 @@ function init() {
   window.addEventListener('scroll', handleSrcoll);
 }
 
-init();
+if (infiniteScrollContainer) {
+  init();
+}

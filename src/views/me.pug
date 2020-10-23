@@ -1,6 +1,9 @@
 extends layout/main
 include mixins/videoBlock
 
+block title
+  | #{pageTitle} | #{siteName}
+
 block content
   if user.avatarUrl
     .profile__background

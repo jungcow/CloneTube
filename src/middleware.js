@@ -31,7 +31,7 @@ export const uploadVideo = multerVideo.single('videoFile');
 export const uploadAvatar = multerAvatar.single('avatar');
 
 export const localsMiddleware = (req, res, next) => {
-  res.locals.siteName = 'Mongo Populate';
+  res.locals.siteName = 'Clonetube';
   res.locals.routes = routes;
   res.locals.user = req.user || '';
   next();

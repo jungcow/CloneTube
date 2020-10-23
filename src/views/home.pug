@@ -1,6 +1,9 @@
 extends layout/main
 include mixins/videoBlock
 
+block title
+  | #{pageTitle} | #{siteName}
+
 block content
   .video-container
     each video in videos

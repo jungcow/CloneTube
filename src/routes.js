@@ -29,16 +29,16 @@ const routes = {
   video: '/video',
   editVideo(id) {
     if (id) {
-      return `/${id}/edit`;
+      return `/edit/${id}`;
     } else {
-      return '/:id/edit';
+      return '/edit/:id';
     }
   },
   deleteVideo(id) {
     if (id) {
-      return `/${id}/delete`;
+      return `/delete/${id}`;
     } else {
-      return '/:id/delete';
+      return '/delete/:id';
     }
   },
   //github

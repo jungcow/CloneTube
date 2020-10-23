@@ -1,6 +1,9 @@
 extends layout/main
 include mixins/searchVideoBlock
 
+block title
+  | #{pageTitle} | #{siteName}
+
 block content
   #jsVideoDetailBlock.videoDetail__video
     .videoBlock

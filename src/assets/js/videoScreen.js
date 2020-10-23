@@ -28,7 +28,7 @@ const requestView = async () => {
     url: `/api/${id}/view`,
     method: 'GET',
   })
-  if (response.status === 200) {
+  if (response.status === 150) {
     return addViews()
   }
 }
@@ -152,13 +152,15 @@ const handleVideoEnded = () => {
 }
 
 const handleLoaded = async () => {
-  const blob = await fetch(videoPlayer.src).then(res => res.blob());
+  const blob = await fetch(videoPlayer.src)
+    .then(res => res.blob());
   const duration = await getBlobDuration(blob);
   videoDuration.innerText = `${makeDurationTime(parseInt(duration))}`;
   durationInput.value = videoPlayer.currentTime;
   durationInput.max = duration;
   fillDurationInput.style.width = `${(durationInput.value * 100) / durationInput.max}%`;
   volumeInput.max = 1;
+  console.log(volumeInput.max);
   volumeInput.value = 0.5;
 }
 

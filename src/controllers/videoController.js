@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Video from '../models/Video';
 import User from '../models/User';
 import Comment from '../models/Comment';
@@ -61,7 +62,7 @@ export const home = async (req, res) => {
     videos.sort((a, b) => {
       return b.random - a.random;
     })
-    res.render('home', { videos });
+    res.render('home', { videos, pageTitle: '홈' });
   } catch (error) {
     console.log(error);
   }
@@ -86,7 +87,7 @@ export const search = async (req, res) => {
     videos.sort((a, b) => {
       return b.random - a.random;
     })
-    res.render('search', { videos, term, creators });
+    res.render('search', { videos, term, creators, pageTitle: '검색' });
   } catch (error) {
     console.log(error);
   }
@@ -101,24 +102,18 @@ export const videoDetail = async (req, res) => {
       path: 'comments',
       populate: { path: 'creator' }
     });
-    // console.log(video.comments.length);
-    video.comments.forEach((comment) => console.log(comment.uniqueId));
-    const recommendVideos = await Video.find({}).limit(8).populate('creator');
-    const uploadedAt = recommendVideos.map((video) => video.uploadedAt);
+    const recommendVideos = await Video.find({}).limit(1).populate('creator');
+    const uploadedAt = recommendVideos.map((a) => a.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray, randomArray);
-    recommendVideos.forEach((video, index) => {
-      video.pastDate = uploadedArray[index];
-      video.random = randomArray[index];
-      video.save();
+    recommendVideos.forEach((a, index) => {
+      a.pastDate = uploadedArray[index];
+      a.random = randomArray[index];
+      a.save();
     });
     recommendVideos.sort((a, b) => {
       return b.random - a.random;
     })
-    recommendVideos.forEach(a => {
-      console.log(a.pastDate);
-      console.log(a.random);
-    });
-    res.render('videoDetail', { video, recommendVideos });
+    res.render('videoDetail', { video, recommendVideos, pageTitle: video.title });
   } catch (error) {
     console.log(error);
     req.flash('accessError', '잘못된 접근입니다');
@@ -127,11 +122,10 @@ export const videoDetail = async (req, res) => {
 }
 
 export const getUpload = (req, res) => {
-  res.render('upload');
+  res.render('upload', { pageTitle: '업로드' });
 }
 export const postUpload = async (req, res) => {
   const { body: { title, description }, file: { location } } = req;
-  console.log(req.file);
   try {
     const newVideo = await Video.create({
       title,
@@ -142,7 +136,7 @@ export const postUpload = async (req, res) => {
     req.user.videos.push(newVideo.id)
     req.user.save();
     req.flash('info', '성공적으로 업로드 하였습니다');
-    res.redirect(`/video/${routes.videoDetail(newVideo.id)}`);
+    res.redirect(`/video${routes.videoDetail(newVideo.id)}`);
   } catch (error) {
     console.log(error);
     res.redirect(routes.upload);
@@ -160,7 +154,7 @@ export const getEditVideo = async (req, res) => {
   try {
     const video = await Video.findById(id);
     protectVideo(req, res, video);
-    res.render('editVideo', { video });
+    res.render('editVideo', { video, pageTitle: '영상 수정' });
   } catch (error) {
     console.log(error);
     req.flash('accessError', '잘못된 접근입니다');

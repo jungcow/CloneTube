@@ -5,7 +5,7 @@ import Video from '../models/Video';
 import { makeUploadTime } from './videoController';
 
 export const getJoin = (req, res) => {
-  res.render('join');
+  res.render('join', { pageTitle: '가입' });
 }
 
 export const postJoin = async (req, res, next) => {
@@ -35,7 +35,7 @@ export const postJoin = async (req, res, next) => {
 
 
 export const getLogin = (req, res) => {
-  res.render('login');
+  res.render('login', { pageTitle: '로그인' });
 }
 
 //LOCAL LOGIN CONTROLLER
@@ -112,7 +112,7 @@ export const me = async (req, res) => {
     const user = await User.findById(req.user.id).populate('videos');
     const uploadedAt = user.videos.map((video) => video.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray);
-    res.render('me', { user, uploadedArray });
+    res.render('me', { user, uploadedArray, pageTitle: '내 프로필' });
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);
@@ -125,7 +125,7 @@ export const profile = async (req, res) => {
     const user = await User.findById(id).populate('videos');
     const uploadedAt = user.videos.map((video) => video.uploadedAt);
     makeUploadTime(uploadedAt, uploadedArray);
-    res.render('profile', { user, uploadedArray });
+    res.render('profile', { user, uploadedArray, pageTitle: `${user.name}의 프로필` });
   } catch (error) {
     req.flash('accessError', '잘못된 접근입니다');
     console.log(error);
@@ -133,7 +133,7 @@ export const profile = async (req, res) => {
   }
 }
 export const getEditProfile = async (req, res) => {
-  res.render('editProfile');
+  res.render('editProfile', { pageTitle: '프로필 수정' });
 }
 
 export const postEditProfile = async (req, res) => {
@@ -153,7 +153,7 @@ export const postEditProfile = async (req, res) => {
 }
 
 export const getChangePassword = (req, res) => {
-  res.render('changePassword');
+  res.render('changePassword', { pageTitle: '비밀번호 변경' });
 }
 
 export const postChangePassword = async (req, res) => {
