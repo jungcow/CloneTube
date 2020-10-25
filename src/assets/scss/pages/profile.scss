@@ -53,9 +53,10 @@
           height: 3.5rem;
         }
         img{
-          width: 6rem;
+          // width: 6rem;
           height: 6rem;
           border-radius: 50%;
+          object-fit: cover;
           overflow: hidden;
           @media screen and (max-width: 600px){
             width: 3.5rem;
