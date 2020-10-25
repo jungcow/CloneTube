@@ -103,13 +103,13 @@
   .profile__user--videos{
     width: 100%;
     display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 0 0;
-      .videoBlock{
-        width: 100%;
-      }
+    justify-content: center;
+    align-items: felx-start;
+    flex-wrap: wrap;
+    margin: 0 0;
+    .videoBlock{
+      width: 100%;
+    }
     .videoBlock{
       h4{
         margin: 0.5rem 0 0.3rem;
