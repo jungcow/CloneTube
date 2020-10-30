@@ -106,16 +106,6 @@ const handleGoFullScreen = () => {
   fullscreenBtn.addEventListener("click", handleExitFullScreen);
 }
 
-// <?xml version="1.0" encoding="UTF-8"?>
-// <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-// <CORSRule>
-//     <AllowedOrigin>*</AllowedOrigin>
-//     <AllowedMethod>GET</AllowedMethod>
-//     <MaxAgeSeconds>3000</MaxAgeSeconds>
-//     <AllowedHeader>Authorization</AllowedHeader>
-// </CORSRule>
-// </CORSConfiguration>
-
 const makeDurationTime = (duration) => {
   console.log('calculating');
   const durationTime = parseInt(duration, 10);
@@ -164,11 +154,17 @@ const handleVideoEnded = () => {
 
 const handleLoaded = async () => {
   const blob = await fetch(videoPlayer.src).then(res => {
-    videoDuration.innerText = 'loading';
+    videoDuration.innerText = 'Now loading';
+    playBtn.innerHTML = '<i class="fas fa-spinner"></i>';
+    playBtn.removeEventListener('click', handlePlayBtn);
+    document.removeEventListener('keypress', handleKeyPressed);
     return res.blob();
   });
   const duration = await getBlobDuration(blob);
   const DURATION = makeDurationTime(parseInt(duration));
+  playBtn.innerHTML = '<i class="fas fa-play"></i>'
+  playBtn.addEventListener('click', handlePlayBtn);
+  document.addEventListener('keypress', handleKeyPressed);
   videoDuration.innerText = DURATION;
   durationInput.value = videoPlayer.currentTime;
   durationInput.max = duration;
@@ -204,17 +200,16 @@ const handleMouseMove = () => {
 function init() {
   videoPlayer.volume = 0.5;
   videoBoxContainer.addEventListener('mousemove', handleMouseMove);
-  // videoPlayer.addEventListener('loadedmetadata', handleLoaded);
   document.addEventListener('readystatechange', handleLoaded);
   videoPlayer.addEventListener('play', handleVideoPlaying);
   videoPlayer.addEventListener('pause', handleVideoPaused);
   videoPlayer.addEventListener('ended', handleVideoEnded);
   durationInput.addEventListener('input', handleDurationChange);
   volumeInput.addEventListener('input', handleVolumeChange);
-  playBtn.addEventListener('click', handlePlayBtn);
+  // playBtn.addEventListener('click', handlePlayBtn);
   volumeBtn.addEventListener('click', handleVolumeBtn);
   fullscreenBtn.addEventListener('click', handleGoFullScreen);
-  document.addEventListener('keypress', handleKeyPressed);
+  // document.addEventListener('keypress', handleKeyPressed);
 }
 
 if (videoBlock) {
