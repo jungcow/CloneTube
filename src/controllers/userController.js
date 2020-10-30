@@ -137,14 +137,15 @@ export const getEditProfile = async (req, res) => {
 }
 
 export const postEditProfile = async (req, res) => {
-  const { body: { name, email }, file } = req;
-  console.log(file);
+  const { body: { name, email }, file, user: { id } } = req;
+  console.log(id);
   try {
-    const user = await User.findOneAndUpdate(req.user.id, {
+    await User.findByIdAndUpdate(id, {
       name,
       email,
       avatarUrl: file ? file.location : req.user.avatarUrl
     });
+    console.log(req.user);
     req.flash('info', "프로필 수정 완료");
   } catch (error) {
     console.log(error);
